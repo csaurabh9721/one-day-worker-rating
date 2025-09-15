@@ -1,0 +1,20 @@
+package com.rating_service.DTO;
+
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class RatingResponseDTO {
+
+    private String id;
+    private String giverId;
+    private String receiverId;
+    private int score;
+    private String comment;
+    private boolean isDeleted;
+    private String createdAt;
+    private String updatedAt;
+}

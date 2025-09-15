@@ -1,0 +1,27 @@
+package com.rating_service.Repository;
+
+import com.rating_service.Entity.Rating;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface RatingRepository extends JpaRepository<Rating, String> {
+    List<Rating> findByReceiverId(String receiverId);
+
+    List<Rating> findByGiverId(String giverId);
+
+    @Query("SELECT r FROM Rating r WHERE r.receiverId = :receiverId AND r.score >= :minRating")
+    List<Rating> findRatingsForReceiverWithMinValue(String receiverId, int minRating);
+
+    @Query(
+            value = "SELECT * FROM ratings r WHERE r.receiver_id = :receiverId ORDER BY r.created_at DESC LIMIT 5",
+            nativeQuery = true
+    )
+    List<Rating> findLatestRatingsForReceiver(String receiverId);
+
+    @Query("SELECT r FROM Rating r WHERE (:receiverId IS NULL OR r.receiverId = :receiverId)")
+    List<Rating> searchRatings(String receiverId);
+}
