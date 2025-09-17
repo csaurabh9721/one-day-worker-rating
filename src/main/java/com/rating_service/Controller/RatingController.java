@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ratings")
+@RequestMapping("/ratingApi/ratings")
 public class RatingController {
     public RatingController(RatingService ratingService) {
         this.ratingService = ratingService;
@@ -52,7 +52,8 @@ public class RatingController {
 
     @GetMapping("/getRatingsByReceiverId/{receiverId}")
     public ResponseEntity<APIResponse<List<RatingResponseDTO>>> getRatingsByReceiverId(@PathVariable String receiverId) {
-        List<RatingResponseDTO> response = ratingService.getRatingsByReceiverId(receiverId);
+        Long longId = Long.valueOf(receiverId);
+        List<RatingResponseDTO> response = ratingService.getRatingsByReceiverId(longId);
         return ResponseEntity.ok(
                 new APIResponse<>(HttpStatus.OK.value(), response, "Ratings fetched for receiver")
         );
@@ -60,14 +61,15 @@ public class RatingController {
 
     @GetMapping("/getRatingsByGiverId/{giverId}")
     public ResponseEntity<APIResponse<List<RatingResponseDTO>>> getRatingsByGiverId(@PathVariable String giverId) {
-        List<RatingResponseDTO> response = ratingService.getRatingsByGiverId(giverId);
+        Long longId = Long.valueOf(giverId);
+        List<RatingResponseDTO> response = ratingService.getRatingsByGiverId(longId);
         return ResponseEntity.ok(
                 new APIResponse<>(HttpStatus.OK.value(), response, "Ratings fetched for giver")
         );
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<APIResponse<Boolean>> deleteRating(@PathVariable String id) {
+    @DeleteMapping("/deleteRatingByRatingId/{id}")
+    public ResponseEntity<APIResponse<Boolean>> deleteRatingByRatingId(@PathVariable String id) {
         Boolean res = ratingService.deleteRating(id);
         return ResponseEntity.ok(
                 new APIResponse<>(HttpStatus.OK.value(), res, "Rating deleted successfully")
@@ -78,7 +80,10 @@ public class RatingController {
     public ResponseEntity<APIResponse<List<RatingResponseDTO>>> findRatingsForReceiverWithMinValue(
             @RequestParam() String giverId,
             @RequestParam(required = false, defaultValue = "0") int minScore) {
-        List<RatingResponseDTO> response = ratingService.findRatingsForReceiverWithMinValue(giverId, minScore);
+        Long longId = Long.valueOf(giverId);
+
+        List<RatingResponseDTO> response = ratingService.findRatingsForReceiverWithMinValue(longId, minScore);
+
         return ResponseEntity.ok(
                 new APIResponse<>(HttpStatus.OK.value(), response, "Ratings fetched for giver")
         );
@@ -86,7 +91,8 @@ public class RatingController {
 
     @GetMapping("/findLatestRatingsForReceiver/{giverId}")
     public ResponseEntity<APIResponse<List<RatingResponseDTO>>> findLatestRatingsForReceiver(@PathVariable String giverId) {
-        List<RatingResponseDTO> response = ratingService.findLatestRatingsForReceiver(giverId);
+        Long longId = Long.valueOf(giverId);
+        List<RatingResponseDTO> response = ratingService.findLatestRatingsForReceiver(longId);
         return ResponseEntity.ok(
                 new APIResponse<>(HttpStatus.OK.value(), response, "Ratings fetched for giver")
         );
@@ -94,7 +100,9 @@ public class RatingController {
 
     @GetMapping("/searchRatings/{giverId}")
     public ResponseEntity<APIResponse<List<RatingResponseDTO>>> searchRatings(@PathVariable String giverId) {
-        List<RatingResponseDTO> response = ratingService.searchRatings(giverId);
+        Long longId = Long.valueOf(giverId);
+
+        List<RatingResponseDTO> response = ratingService.searchRatings(longId);
         return ResponseEntity.ok(
                 new APIResponse<>(HttpStatus.OK.value(), response, "Ratings fetched for giver")
         );

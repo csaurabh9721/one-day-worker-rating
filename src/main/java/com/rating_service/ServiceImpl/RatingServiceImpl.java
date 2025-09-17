@@ -52,7 +52,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<RatingResponseDTO> getRatingsByReceiverId(String receiverId) {
+    public List<RatingResponseDTO> getRatingsByReceiverId(Long receiverId) {
         return ratingRepository.findByReceiverId(receiverId)
                 .stream()
                 .map(this::toResponseDTO)
@@ -60,7 +60,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<RatingResponseDTO> getRatingsByGiverId(String giverId) {
+    public List<RatingResponseDTO> getRatingsByGiverId(Long giverId) {
         return ratingRepository.findByGiverId(giverId)
                 .stream()
                 .map(this::toResponseDTO)
@@ -77,7 +77,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<RatingResponseDTO> findRatingsForReceiverWithMinValue(String receiverId, int minRating) {
+    public List<RatingResponseDTO> findRatingsForReceiverWithMinValue(Long receiverId, int minRating) {
         return ratingRepository.findRatingsForReceiverWithMinValue(receiverId, minRating)
                 .stream()
                 .map(this::toResponseDTO)
@@ -85,7 +85,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<RatingResponseDTO> findLatestRatingsForReceiver(String receiverId) {
+    public List<RatingResponseDTO> findLatestRatingsForReceiver(Long receiverId) {
         return ratingRepository.findLatestRatingsForReceiver(receiverId)
                 .stream()
                 .map(this::toResponseDTO)
@@ -93,7 +93,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<RatingResponseDTO> searchRatings(String receiverId) {
+    public List<RatingResponseDTO> searchRatings(Long receiverId) {
         return ratingRepository.searchRatings(receiverId)
                 .stream()
                 .map(this::toResponseDTO)

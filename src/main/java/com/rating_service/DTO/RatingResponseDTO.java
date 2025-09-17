@@ -10,8 +10,8 @@ import lombok.*;
 public class RatingResponseDTO {
 
     private String id;
-    private String giverId;
-    private String receiverId;
+    private Long giverId;
+    private Long receiverId;
     private int score;
     private String comment;
     private boolean isDeleted;

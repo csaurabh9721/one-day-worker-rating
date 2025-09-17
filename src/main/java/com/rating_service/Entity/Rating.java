@@ -16,10 +16,10 @@ public class Rating extends BaseEntity {
     private String id;
 
     @Column(name = "giver_id", nullable = false)
-    private String giverId;
+    private Long giverId;
 
     @Column(name = "receiver_id", nullable = false)
-    private String receiverId;
+    private Long receiverId;
 
     @Column(name = "score", nullable = false)
     private int score;

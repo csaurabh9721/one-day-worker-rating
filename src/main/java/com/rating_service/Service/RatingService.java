@@ -14,16 +14,16 @@ public interface RatingService {
 
     RatingResponseDTO getRatingById(String id);
 
-    List<RatingResponseDTO> getRatingsByReceiverId(String receiverId);
+    List<RatingResponseDTO> getRatingsByReceiverId(Long receiverId);
 
-    List<RatingResponseDTO> getRatingsByGiverId(String giverId);
+    List<RatingResponseDTO> getRatingsByGiverId(Long giverId);
 
     Boolean deleteRating(String id);
 
-    List<RatingResponseDTO> findRatingsForReceiverWithMinValue(String receiverId, int minRating);
+    List<RatingResponseDTO> findRatingsForReceiverWithMinValue(Long receiverId, int minRating);
 
-    List<RatingResponseDTO> findLatestRatingsForReceiver(String receiverId);
+    List<RatingResponseDTO> findLatestRatingsForReceiver(Long receiverId);
 
-    List<RatingResponseDTO> searchRatings(String receiverId);
+    List<RatingResponseDTO> searchRatings(Long receiverId);
 }
 

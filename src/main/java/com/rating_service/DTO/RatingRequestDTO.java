@@ -13,10 +13,10 @@ import lombok.*;
 public class RatingRequestDTO {
 
     @NotBlank(message = "Giver ID cannot be blank")
-    private String giverId;
+    private Long giverId;
 
     @NotBlank(message = "Receiver ID cannot be blank")
-    private String receiverId;
+    private Long receiverId;
 
     @Min(value = 1, message = "Score must be at least 1")
     @Max(value = 5, message = "Score cannot be greater than 5")
