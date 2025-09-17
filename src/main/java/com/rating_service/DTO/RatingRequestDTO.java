@@ -12,10 +12,10 @@ import lombok.*;
 @Builder
 public class RatingRequestDTO {
 
-    @NotBlank(message = "Giver ID cannot be blank")
+    @NotNull(message = "Giver ID cannot be null")
     private Long giverId;
 
-    @NotBlank(message = "Receiver ID cannot be blank")
+    @NotNull(message = "Giver ID cannot be null")
     private Long receiverId;
 
     @Min(value = 1, message = "Score must be at least 1")

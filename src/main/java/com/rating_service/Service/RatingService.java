@@ -10,20 +10,19 @@ public interface RatingService {
 
     RatingResponseDTO createRating(RatingRequestDTO requestDTO);
 
-    RatingResponseDTO updateRating(String ratingId, RatingRequestDTO requestDTO);
+    RatingResponseDTO updateRating(Long ratingId, RatingRequestDTO requestDTO);
 
-    RatingResponseDTO getRatingById(String id);
+    RatingResponseDTO getRatingById(Long id);
 
     List<RatingResponseDTO> getRatingsByReceiverId(Long receiverId);
 
     List<RatingResponseDTO> getRatingsByGiverId(Long giverId);
 
-    Boolean deleteRating(String id);
+    Boolean deleteRating(Long id);
 
     List<RatingResponseDTO> findRatingsForReceiverWithMinValue(Long receiverId, int minRating);
 
     List<RatingResponseDTO> findLatestRatingsForReceiver(Long receiverId);
 
-    List<RatingResponseDTO> searchRatings(Long receiverId);
 }
 

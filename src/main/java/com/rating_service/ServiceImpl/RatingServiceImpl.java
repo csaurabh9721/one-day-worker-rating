@@ -10,6 +10,7 @@ import com.rating_service.Service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,20 +21,29 @@ public class RatingServiceImpl implements RatingService {
     private final RatingRepository ratingRepository;
 
     @Override
-    public RatingResponseDTO createRating(RatingRequestDTO requestDTO) {
-        Rating rating = Rating.builder()
-                .giverId(requestDTO.getGiverId())
-                .receiverId(requestDTO.getReceiverId())
-                .score(requestDTO.getScore())
-                .comment(requestDTO.getComment())
-                .build();
-
-        Rating saved = ratingRepository.save(rating);
-        return toResponseDTO(saved);
+    public RatingResponseDTO createRating(RatingRequestDTO dto) {
+        Rating rating = new Rating();
+        rating.setGiverId(dto.getGiverId());
+        rating.setReceiverId(dto.getReceiverId());
+        rating.setScore(dto.getScore());
+        rating.setComment(dto.getComment());
+        rating.setDeleted(false);
+        rating.setUpdatedAt(LocalDateTime.now());
+        rating.setCreatedAt(LocalDateTime.now());
+        Rating savedRating = ratingRepository.save(rating);
+        RatingResponseDTO responseDto = new RatingResponseDTO();
+        responseDto.setId(savedRating.getId());
+        responseDto.setGiverId(savedRating.getGiverId());
+        responseDto.setReceiverId(savedRating.getReceiverId());
+        responseDto.setScore(savedRating.getScore());
+        responseDto.setComment(savedRating.getComment());
+        responseDto.setCreatedAt(savedRating.getCreatedAt());
+        responseDto.setUpdatedAt(savedRating.getUpdatedAt());
+        return responseDto;
     }
 
     @Override
-    public RatingResponseDTO updateRating(String ratingId, RatingRequestDTO requestDTO) {
+    public RatingResponseDTO updateRating(Long ratingId, RatingRequestDTO requestDTO) {
         Rating rating = ratingRepository.findById(ratingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Rating not found with id: " + ratingId));
         rating.setGiverId(requestDTO.getGiverId());
@@ -45,7 +55,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public RatingResponseDTO getRatingById(String id) {
+    public RatingResponseDTO getRatingById(Long id) {
         Rating rating = ratingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rating not found with id: " + id));
         return toResponseDTO(rating);
@@ -68,7 +78,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public Boolean deleteRating(String id) {
+    public Boolean deleteRating(Long id) {
         Rating rating = ratingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rating not found with id: " + id));
         rating.setDeleted(true);
@@ -92,13 +102,6 @@ public class RatingServiceImpl implements RatingService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<RatingResponseDTO> searchRatings(Long receiverId) {
-        return ratingRepository.searchRatings(receiverId)
-                .stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
-    }
 
     private RatingResponseDTO toResponseDTO(Rating rating) {
         return RatingResponseDTO.builder()
@@ -107,9 +110,8 @@ public class RatingServiceImpl implements RatingService {
                 .receiverId(rating.getReceiverId())
                 .score(rating.getScore())
                 .comment(rating.getComment())
-                .isDeleted(rating.isDeleted())
-                .createdAt(rating.getCreatedAt().toString())
-                .updatedAt(rating.getUpdatedAt() != null ? rating.getUpdatedAt().toString() : null)
+                .createdAt(rating.getCreatedAt())
+                .updatedAt(rating.getUpdatedAt() != null ? rating.getUpdatedAt() : null)
                 .build();
     }
 }

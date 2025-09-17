@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RatingRepository extends JpaRepository<Rating, String> {
+public interface RatingRepository extends JpaRepository<Rating, Long> {
     List<Rating> findByReceiverId(Long receiverId);
 
     List<Rating> findByGiverId(Long giverId);
@@ -21,7 +21,4 @@ public interface RatingRepository extends JpaRepository<Rating, String> {
             nativeQuery = true
     )
     List<Rating> findLatestRatingsForReceiver(Long receiverId);
-
-    @Query("SELECT r FROM Rating r WHERE (:receiverId IS NULL OR r.receiverId = :receiverId)")
-    List<Rating> searchRatings(Long receiverId);
 }

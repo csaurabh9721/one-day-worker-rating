@@ -2,6 +2,8 @@ package com.rating_service.DTO;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -9,12 +11,11 @@ import lombok.*;
 @Builder
 public class RatingResponseDTO {
 
-    private String id;
+    private Long id;
     private Long giverId;
     private Long receiverId;
     private int score;
     private String comment;
-    private boolean isDeleted;
-    private String createdAt;
-    private String updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
