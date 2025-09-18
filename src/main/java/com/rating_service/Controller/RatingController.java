@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ratingApi/ratings")
+@RequestMapping("/ratingService/ratings")
 public class RatingController {
     public RatingController(RatingService ratingService) {
         this.ratingService = ratingService;
