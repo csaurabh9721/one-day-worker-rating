@@ -1,7 +1,6 @@
 package com.rating_service.Service;
 
-import com.rating_service.DTO.RatingRequestDTO;
-import com.rating_service.DTO.RatingResponseDTO;
+import com.rating_service.DTO.*;
 import com.rating_service.Entity.Rating;
 
 import java.util.List;
@@ -14,9 +13,9 @@ public interface RatingService {
 
     RatingResponseDTO getRatingById(Long id);
 
-    List<RatingResponseDTO> getRatingsByReceiverId(Long receiverId);
+    List<RatingWithUserDto<UserDto>> getRatingsByReceiverId(Long receiverId);
 
-    List<RatingResponseDTO> getRatingsByGiverId(Long giverId);
+    List<RatingWithUserDto<WorkerDto>> getRatingsByGiverId(Long giverId);
 
     Boolean deleteRating(Long id);
 

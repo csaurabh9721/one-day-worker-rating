@@ -1,6 +1,17 @@
 package com.rating_service.DTO;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-public record APIResponse<T>(int statusCode, T data, String message) { }
+@Data
+@AllArgsConstructor
+@Getter
+@Setter
+public class APIResponse<T> {
+    private final int statusCode;
+    private final T data;
+    private final String message;
+}

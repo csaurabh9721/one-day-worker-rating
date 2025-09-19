@@ -1,9 +1,7 @@
 package com.rating_service.Controller;
 
 
-import com.rating_service.DTO.RatingRequestDTO;
-import com.rating_service.DTO.RatingResponseDTO;
-import com.rating_service.DTO.APIResponse;
+import com.rating_service.DTO.*;
 import com.rating_service.Service.RatingService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -51,18 +49,18 @@ public class RatingController {
     }
 
     @GetMapping("/getRatingsByReceiverId/{receiverId}")
-    public ResponseEntity<APIResponse<List<RatingResponseDTO>>> getRatingsByReceiverId(@PathVariable String receiverId) {
+    public ResponseEntity<APIResponse<List<RatingWithUserDto<UserDto>>>> getRatingsByReceiverId(@PathVariable String receiverId) {
         Long longId = Long.valueOf(receiverId);
-        List<RatingResponseDTO> response = ratingService.getRatingsByReceiverId(longId);
+        List<RatingWithUserDto<UserDto>> response = ratingService.getRatingsByReceiverId(longId);
         return ResponseEntity.ok(
                 new APIResponse<>(HttpStatus.OK.value(), response, "Ratings fetched for receiver")
         );
     }
 
     @GetMapping("/getRatingsByGiverId/{giverId}")
-    public ResponseEntity<APIResponse<List<RatingResponseDTO>>> getRatingsByGiverId(@PathVariable String giverId) {
+    public ResponseEntity<APIResponse<List<RatingWithUserDto<WorkerDto>>>> getRatingsByGiverId(@PathVariable String giverId) {
         Long longId = Long.valueOf(giverId);
-        List<RatingResponseDTO> response = ratingService.getRatingsByGiverId(longId);
+        List<RatingWithUserDto<WorkerDto>> response = ratingService.getRatingsByGiverId(longId);
         return ResponseEntity.ok(
                 new APIResponse<>(HttpStatus.OK.value(), response, "Ratings fetched for giver")
         );

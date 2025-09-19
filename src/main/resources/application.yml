@@ -6,8 +6,8 @@ spring:
     url: jdbc:mysql://localhost:3306/rating_service
     name: rating_service
     username: root
-    password: 972114@Ss
-    #password: root9721
+    #password: 972114@Ss
+    password: root9721
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

@@ -1,24 +1,29 @@
 package com.rating_service.ServiceImpl;
 
 
-import com.rating_service.DTO.RatingRequestDTO;
-import com.rating_service.DTO.RatingResponseDTO;
+import com.rating_service.DTO.*;
 import com.rating_service.Entity.Rating;
 import com.rating_service.GlobleException.ResourceNotFoundException;
 import com.rating_service.Repository.RatingRepository;
 import com.rating_service.Service.RatingService;
+import com.rating_service.Service.UserFeignService;
+import com.rating_service.Service.WorkerFeignService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RatingServiceImpl implements RatingService {
-
     private final RatingRepository ratingRepository;
+    private final UserFeignService userFeignService;
+    private final WorkerFeignService workerFeignService;
 
     @Override
     public RatingResponseDTO createRating(RatingRequestDTO dto) {
@@ -62,19 +67,50 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<RatingResponseDTO> getRatingsByReceiverId(Long receiverId) {
+    public List<RatingWithUserDto<UserDto>> getRatingsByReceiverId(Long receiverId) {
+
         return ratingRepository.findByReceiverId(receiverId)
                 .stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+                .map(rating -> {
+                    RatingWithUserDto<UserDto> rt = toRatingWithUserDto(rating);
+                    UserDto user = getUser(rt.getGiverId());
+                    rt.setUser(user);
+                    return rt;
+                })
+                .toList();
+    }
+
+    private UserDto getUser(Long workerId) {
+        try {
+            APIResponse<UserDto> user = userFeignService.getUserByUserId(workerId);
+            return user.getData();
+        } catch (Exception e) {
+            log.info(e.toString());
+            return null;
+        }
     }
 
     @Override
-    public List<RatingResponseDTO> getRatingsByGiverId(Long giverId) {
+    public List<RatingWithUserDto<WorkerDto>> getRatingsByGiverId(Long giverId) {
         return ratingRepository.findByGiverId(giverId)
                 .stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+                .map(rating -> {
+                    RatingWithUserDto<WorkerDto> rt = toRatingWithWorkerDto(rating);
+                    WorkerDto worker = getWorker(rt.getReceiverId());
+                    rt.setUser(worker);
+                    return rt;
+                })
+                .toList();
+    }
+
+    private WorkerDto getWorker(Long workerId) {
+        try {
+            APIResponse<WorkerDto> worker = workerFeignService.getWorkerByUserId(workerId);
+            return worker.getData();
+        } catch (Exception e) {
+            log.info(e.toString());
+            return null;
+        }
     }
 
     @Override
@@ -113,6 +149,30 @@ public class RatingServiceImpl implements RatingService {
                 .createdAt(rating.getCreatedAt())
                 .updatedAt(rating.getUpdatedAt() != null ? rating.getUpdatedAt() : null)
                 .build();
+    }
+
+    private RatingWithUserDto<UserDto> toRatingWithUserDto(Rating rating) {
+        RatingWithUserDto<UserDto> dto = new RatingWithUserDto<>();
+        dto.setId(rating.getId());
+        dto.setGiverId(rating.getGiverId());
+        dto.setReceiverId(rating.getReceiverId());
+        dto.setScore(rating.getScore());
+        dto.setComment(rating.getComment());
+        dto.setCreatedAt(rating.getCreatedAt());
+        dto.setUpdatedAt(rating.getUpdatedAt() != null ? rating.getUpdatedAt() : null);
+        return dto;
+    }
+
+    private RatingWithUserDto<WorkerDto> toRatingWithWorkerDto(Rating rating) {
+        RatingWithUserDto<WorkerDto> dto = new RatingWithUserDto<>();
+        dto.setId(rating.getId());
+        dto.setGiverId(rating.getGiverId());
+        dto.setReceiverId(rating.getReceiverId());
+        dto.setScore(rating.getScore());
+        dto.setComment(rating.getComment());
+        dto.setCreatedAt(rating.getCreatedAt());
+        dto.setUpdatedAt(rating.getUpdatedAt() != null ? rating.getUpdatedAt() : null);
+        return dto;
     }
 }
 

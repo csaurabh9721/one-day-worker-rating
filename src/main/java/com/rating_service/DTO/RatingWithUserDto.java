@@ -1,15 +1,12 @@
 package com.rating_service.DTO;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class RatingResponseDTO {
+@Data
+public class RatingWithUserDto<T> {
     private Long id;
     private Long giverId;
     private Long receiverId;
@@ -17,4 +14,5 @@ public class RatingResponseDTO {
     private String comment;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private T user;
 }
