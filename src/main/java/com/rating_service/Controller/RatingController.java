@@ -48,6 +48,10 @@ public class RatingController {
         );
     }
 
+
+
+
+
     @GetMapping("/getRatingsByReceiverId/{receiverId}")
     public ResponseEntity<APIResponse<List<RatingWithUserDto<UserDto>>>> getRatingsByReceiverId(@PathVariable String receiverId) {
         Long longId = Long.valueOf(receiverId);
@@ -56,6 +60,14 @@ public class RatingController {
                 new APIResponse<>(HttpStatus.OK.value(), response, "Ratings fetched for receiver")
         );
     }
+
+    /// Comment above code and Open it for test circuit breaker
+/*    @GetMapping("/getRatingsByReceiverId/{id}")
+    public ResponseEntity<?> failAlways() {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("INTENTIONAL FAILURE");
+    }*/
 
     @GetMapping("/getRatingsByGiverId/{giverId}")
     public ResponseEntity<APIResponse<List<RatingWithUserDto<WorkerDto>>>> getRatingsByGiverId(@PathVariable String giverId) {
