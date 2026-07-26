@@ -3,11 +3,10 @@ spring:
     name: Rating-Service
 
   datasource:
-    url: jdbc:mysql://mysql:3306/rating_service
+    url: jdbc:mysql://host.docker.internal:3306/rating_service
     name: rating_service
-    username: root
-    #password: 972114@Ss
-    password: root9721
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -16,12 +15,12 @@ spring:
       ddl-auto: update
 
 server:
-  port: 8084
+  port: ${SERVER_PORT:8083}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka-server:8080/eureka/
+      defaultZone: http://eureka-server:8761/eureka/
     fetch-registry: true
     register-with-eureka: true
   instance:
